@@ -1,0 +1,28 @@
+name: PR test
+
+on: 
+  pull_request: 
+    branches:
+      - main
+jobs:
+  test: 
+    name: Run the npm test
+    runs-on: ubuntu-latest
+
+    steps: 
+      - name: checkout-code
+        uses: actions/checkout@v4
+
+      - name: node-install
+        uses: actions/setup-node@v4
+        with:
+           node-version: 'lts/*'
+           cache: 'npm'
+           
+      - name: Install dep
+        run: npm ci
+
+      - name: Run test
+        run: npm run test
+
+    
