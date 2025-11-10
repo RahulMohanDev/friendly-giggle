@@ -34,8 +34,10 @@ jobs:
 
       - name: Deploy to EC2
         run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "mkdir -p /var/www/react-app"
-          rsync -avz --delete ./dist/ ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/var/www/react-app/
+          ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "sudo mkdir -p /var/www/react-app && sudo chown -R ${{ secrets.EC2_USER }}:${{ secrets.EC2_USER }} /var/www/react-app"
+          rsync -avz --delete ./build/ ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/var/www/react-app/
+          ssh -o StrictHostKeyChecking=no ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "sudo chown -R www-data:www-data /var/www/react-app"
+
 
       - name: Restart Nginx
         run: |
